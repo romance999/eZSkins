@@ -8,11 +8,14 @@ const client = new SteamUser();
 
 const login = require("../json/account.json");
 
+const webLink = require("../json/webhook.json");
+
 const Webhook = require("./Webhook.js");
 
 const loginhook = require("../json/loginwebhook.json");
 
 const colors = require('colors');
+const { options } = require("snekfetch");
 
 // variables //
 var isLogged;
@@ -37,9 +40,10 @@ function LoggedIn()
         console.log('');
         console.log('Successfully logged in as '.green + login.accountName.green);
         client.setPersona(SteamUser.EPersonaState.Busy); //set the state
+        Webhook.SendWebhook(webLink.logins, login.accountName + " has logged in");
         console.log("");
         console.log("Hotkeys: ");
-        console.log("q: Logout | w: Relog | e: exit");
+        console.log("q: Logout | w: Relog | e: Exit | r: Clear console");
         isLogged = true;
     });
 }
@@ -82,6 +86,7 @@ function sendFriendMessage(id, message)
         client.chat.sendFriendMessage(id, message);
         console.log("");
         console.log(login.accountName.gray + ' Successfully sent a message to '.gray + id.gray + ' saying '.gray + message.gray);
+        Webhook.SendWebhook(webLink.messages, login.accountName + " has sent a message to " + id + " saying " + message);
     }
     else if (!isLogged)
     {
@@ -114,6 +119,8 @@ function removeFriend(id)
 function blockUser(id)
 {
     client.blockUser(id);
+    console.log("");
+    console.log("Blocked ".green + id.green);
 }
 
 module.exports =
