@@ -36,11 +36,10 @@ function LoggedIn()
         //this is for when the client first connects
         console.log('');
         console.log('Successfully logged in as '.green + login.accountName.green);
-        //Webhook.SendWebhook(loginhook.url, "Successfully logged in as" + login.accountName);
         client.setPersona(SteamUser.EPersonaState.Busy); //set the state
         console.log("");
-        console.log("           Hotkeys: ");
-        console.log("           q: Logout | w: Relog | e: exit");
+        console.log("Hotkeys: ");
+        console.log("q: Logout | w: Relog | e: exit");
         isLogged = true;
     });
 }
@@ -76,13 +75,13 @@ function Logout()
     }
 }
 
-function sendMessage(id, message)
+function sendFriendMessage(id, message)
 {
     if (isLogged)
     {
         client.chat.sendFriendMessage(id, message);
         console.log("");
-        console.log('Successfully sent message '.gray);
+        console.log(login.accountName.gray + ' Successfully sent a message to '.gray + id.gray + ' saying '.gray + message.gray);
     }
     else if (!isLogged)
     {
@@ -91,11 +90,41 @@ function sendMessage(id, message)
     }
 }
 
+function acceptFriendRequest(id)
+{
+    client.acceptFriendRequest(id);
+    console.log("");
+    console.log("Accepted ".green + id.green + " friends request");
+}
+
+function addFriend(id)
+{
+    client.addFriend(id);
+    console.log("");
+    console.log("Sent friend request to ".green + id.green);
+}
+
+function removeFriend(id)
+{
+    client.removeFriend(id);
+    console.log("");
+    console.log("Removed ".green + id.green + " as a friend");
+}
+
+function blockUser(id)
+{
+    client.blockUser(id);
+}
+
 module.exports =
 {
     Login,
     LoggedIn,
     Relog,
     Logout,
-    sendMessage
+    sendFriendMessage,
+    acceptFriendRequest,
+    addFriend,
+    removeFriend,
+    blockUser
 }
