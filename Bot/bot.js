@@ -2,8 +2,6 @@ const loginhook = require("./json/loginwebhook.json");
 
 const colors = require('colors');
 
-const axios = require("axios").default;
-
 const ChanceJS = require("chance");
 
 const login = require("./json/account.json");
@@ -18,6 +16,12 @@ console.log("Attempting login".red);
 
 Steam.Login();
 Steam.LoggedIn();
+
+//wait for steam bot to login
+setTimeout(function()
+{
+  Steam.sendFriendMessage(login.OwnerID, login.accountName + " has logged in");
+}, 1300);
 
 function RandomChance()
 {
