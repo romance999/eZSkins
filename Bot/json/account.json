@@ -1,4 +1,6 @@
 {
     "accountName": "name",
     "password": "password"
+    "secret": "secret",
+    "OwnerID": "id"
 }
