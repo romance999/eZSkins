@@ -1,48 +1,30 @@
-const login = require("./json/account.json");
-
 const loginhook = require("./json/loginwebhook.json");
-
-const SteamUser = require('steam-user');
-
-const SteamTotp = require('steam-totp');
-
-const client = new SteamUser();
 
 const colors = require('colors');
 
 const axios = require("axios").default;
 
+const ChanceJS = require("chance");
 
-const Options =
-{
-    accountName: login.accountName,
-    password: login.password,
-    //twoFactorCode: SteamTotp.generateAuthCode(login.secret) 
-}
+const login = require("./json/account.json");
 
+const Steam = require("./Handler/Steam.js");
+
+const Keys = require ("./Handler/KeyPress.js");
+
+
+Keys.Start();
 console.log("Attempting login".red);
 
-client.logOn(Options);
-client.on('loggedOn', () => 
-{
-    console.log('');
-    console.log('Successfully logged in as '.green + login.accountName.green);
-    sendWebhook(loginhook.url, "Successfully logged in as" + login.accountName);
-    client.setPersona(SteamUser.EPersonaState.Busy); //set the state
-});
+Steam.Login();
+Steam.LoggedIn();
 
-function sendWebhook(url, content)
+function RandomChance()
 {
-    let msg = {
-        "content": content
-    };
-    
-    axios({
-      url: url,
-      data: JSON.stringify(msg),
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+  const serverSeed = "";
+  const randomSeed = "";
+  const mod = `${serverSeed}-${randomSeed}`;
+  const chance = new ChanceJS(mod);
+  const ticket = chance.floating({min: 0, max: 1, fixed: 15});
+  console.log(ticket);
 }
