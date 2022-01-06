@@ -1,6 +1,8 @@
 const fs = require("fs");
+const axios = require("axios").default;
 
-function SendWebhook()
+
+function SendWebhook(url, content)
 {
     let msg =
     {
